@@ -9,8 +9,8 @@
 import WebKit
 
 public protocol SwiftWebVCDelegate: class {
-    func didStartLoading(url: String)
-    func didFinishLoading(success: Bool, url: String)
+    func didStartLoading()
+    func didFinishLoading(success: Bool)
 }
 
 public class SwiftWebVC: UIViewController {
@@ -66,7 +66,7 @@ public class SwiftWebVC: UIViewController {
     }()
     
     
-    lazy var webView: WKWebView = {
+    lazy public var webView: WKWebView = {
         var tempWebView = WKWebView(frame: UIScreen.main.bounds)
         tempWebView.uiDelegate = self
         tempWebView.navigationDelegate = self
@@ -313,57 +313,6 @@ extension SwiftWebVC: WKNavigationDelegate {
     }
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        
-        let url = navigationAction.request.url
-        
-        let hostAddress = navigationAction.request.url?.host
-        
-        if (navigationAction.targetFrame == nil) {
-            if UIApplication.shared.canOpenURL(url!) {
-                UIApplication.shared.openURL(url!)
-            }
-        }
-        
-        // To connnect app store
-        if hostAddress == "itunes.apple.com" {
-            if UIApplication.shared.canOpenURL(navigationAction.request.url!) {
-                UIApplication.shared.openURL(navigationAction.request.url!)
-                decisionHandler(.cancel)
-                return
-            }
-        }
-        
-        let url_elements = url!.absoluteString.components(separatedBy: ":")
-        
-        switch url_elements[0] {
-        case "tel":
-            openCustomApp(urlScheme: "telprompt://", additional_info: url_elements[1])
-            decisionHandler(.cancel)
-            
-        case "sms":
-            openCustomApp(urlScheme: "sms://", additional_info: url_elements[1])
-            decisionHandler(.cancel)
-            
-        case "mailto":
-            openCustomApp(urlScheme: "mailto://", additional_info: url_elements[1])
-            decisionHandler(.cancel)
-            
-        default:
-            //print("Default")
-            break
-        }
-        
         decisionHandler(.allow)
-        
-    }
-    
-    func openCustomApp(urlScheme: String, additional_info:String){
-        
-        if let requestUrl: URL = URL(string:"\(urlScheme)"+"\(additional_info)") {
-            let application:UIApplication = UIApplication.shared
-            if application.canOpenURL(requestUrl) {
-                application.openURL(requestUrl)
-            }
-        }
     }
 }
