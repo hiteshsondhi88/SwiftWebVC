@@ -15,7 +15,7 @@ public protocol SwiftWebVCDelegate: class {
 
 public class SwiftWebVC: UIViewController {
     
-    public weak var delegate: SwiftWebVCDelegate?
+    public var delegate: SwiftWebVCDelegate?
     var storedStatusColor: UIBarStyle?
     var buttonColor: UIColor? = nil
     var titleColor: UIColor? = nil

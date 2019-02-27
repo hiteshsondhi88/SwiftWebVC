@@ -10,7 +10,7 @@ import UIKit
 
 public class SwiftModalWebVC: UINavigationController {
 
-    public weak var webVCDelegate: SwiftWebVCDelegate?
+    public var webVCDelegate: SwiftWebVCDelegate?
 
     public enum SwiftModalWebVCTheme {
         case lightBlue, lightBlack, dark
@@ -20,7 +20,6 @@ public class SwiftModalWebVC: UINavigationController {
     }
     
     weak var webViewDelegate: UIWebViewDelegate? = nil
-    var webViewController: SwiftWebVC!
     
     public convenience init(urlString: String, sharingEnabled: Bool = true) {
         var urlString = urlString
@@ -43,7 +42,7 @@ public class SwiftModalWebVC: UINavigationController {
     }
     
     public init(request: URLRequest, theme: SwiftModalWebVCTheme = .lightBlue, dismissButtonStyle: SwiftModalWebVCDismissButtonStyle = .arrow, sharingEnabled: Bool = true) {
-        webViewController = SwiftWebVC(aRequest: request)
+        let webViewController = SwiftWebVC(aRequest: request)
         webViewController.sharingEnabled = sharingEnabled
         webViewController.delegate = self.webVCDelegate
         webViewController.storedStatusColor = UINavigationBar.appearance().barStyle
