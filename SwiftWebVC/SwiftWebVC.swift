@@ -9,8 +9,8 @@
 import WebKit
 
 public protocol SwiftWebVCDelegate: class {
-    func didStartLoading()
-    func didFinishLoading(success: Bool)
+    func didStartLoading(webView: WKWebView)
+    func didFinishLoading(success: Bool, webView: WKWebView)
 }
 
 public class SwiftWebVC: UIViewController {
@@ -289,13 +289,13 @@ extension SwiftWebVC: WKUIDelegate {
 extension SwiftWebVC: WKNavigationDelegate {
     
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        self.delegate?.didStartLoading()
+        self.delegate?.didStartLoading(webView: webView)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         updateToolbarItems()
     }
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.delegate?.didFinishLoading(success: true)
+        self.delegate?.didFinishLoading(success: true, webView: webView)
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         webView.evaluateJavaScript("document.title", completionHandler: {(response, error) in
@@ -307,7 +307,7 @@ extension SwiftWebVC: WKNavigationDelegate {
     }
     
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        self.delegate?.didFinishLoading(success: false)
+        self.delegate?.didFinishLoading(success: false, webView: webView)
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         updateToolbarItems()
     }

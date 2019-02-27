@@ -9,7 +9,9 @@
 import UIKit
 
 public class SwiftModalWebVC: UINavigationController {
-    
+
+    public weak var webVCDelegate: SwiftWebVCDelegate?
+
     public enum SwiftModalWebVCTheme {
         case lightBlue, lightBlack, dark
     }
@@ -42,6 +44,7 @@ public class SwiftModalWebVC: UINavigationController {
     public init(request: URLRequest, theme: SwiftModalWebVCTheme = .lightBlue, dismissButtonStyle: SwiftModalWebVCDismissButtonStyle = .arrow, sharingEnabled: Bool = true) {
         let webViewController = SwiftWebVC(aRequest: request)
         webViewController.sharingEnabled = sharingEnabled
+        webViewController.delegate = self.webVCDelegate
         webViewController.storedStatusColor = UINavigationBar.appearance().barStyle
         
         let dismissButtonImageName = (dismissButtonStyle == .arrow) ? "SwiftWebVCDismiss" : "SwiftWebVCDismissAlt"
