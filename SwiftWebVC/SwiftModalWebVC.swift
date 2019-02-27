@@ -24,7 +24,7 @@ public class SwiftModalWebVC: UINavigationController {
     }
     
     weak var webViewDelegate: UIWebViewDelegate? = nil
-    let webViewController: SwiftWebVC
+    var webViewController: SwiftWebVC!
     
     public convenience init(urlString: String, sharingEnabled: Bool = true) {
         var urlString = urlString
